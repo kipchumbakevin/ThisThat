@@ -11,7 +11,6 @@
         android:layout_height="wrap_content"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        android:text="Would you rather"
         android:textStyle="bold"
         android:id="@+id/title"
         android:layout_marginStart="20dp"
