@@ -78,12 +78,17 @@ public class MainAdapter extends RecyclerView.Adapter<MainAdapter.ViewHolder> {
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    getUser();
+                    String phone = ccp.getFullNumberWithPlus();
+                    if (phone.equals(sharedPreferencesConfig.readClientsPhone())){
+                        Toast.makeText(activity, "You can not re-evaluate yourself", Toast.LENGTH_SHORT).show();
+                    }else {
+                        getUser();
+                    }
                 }
             });
         }
 
-            private void getUser() {
+        private void getUser() {
         String phone = ccp.getFullNumberWithPlus();
         progressBar.setVisibility(View.VISIBLE);
         Call<GetUserModel> call = RetrofitClient.getInstance(activity)

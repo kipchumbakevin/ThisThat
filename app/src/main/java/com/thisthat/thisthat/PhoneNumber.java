@@ -16,6 +16,7 @@ import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.CountDownTimer;
 import android.provider.ContactsContract;
 import android.view.View;
 import android.widget.Button;
@@ -27,6 +28,7 @@ import com.thisthat.thisthat.adapters.MainAdapter;
 import com.thisthat.thisthat.models.ContactModel;
 import com.thisthat.thisthat.models.GetUserModel;
 import com.thisthat.thisthat.networking.RetrofitClient;
+import com.thisthat.thisthat.utils.Constants;
 import com.thisthat.thisthat.utils.SharedPreferencesConfig;
 
 import java.util.ArrayList;
@@ -40,14 +42,28 @@ public class PhoneNumber extends AppCompatActivity {
     RecyclerView recyclerView;
     ArrayList<ContactModel> arrayList = new ArrayList<ContactModel>();
     MainAdapter adapter;
+    CountDownTimer countDownTimer;
+    ProgressBar progressBar;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_phone_number);
         recyclerView = findViewById(R.id.recycler_view);
+        progressBar = findViewById(R.id.progress);
         sharedPreferencesConfig = new SharedPreferencesConfig(getApplicationContext());
+        countDownTimer = new CountDownTimer(Constants.SECONDS,Constants.INTERVALS) {
+            @Override
+            public void onTick(long l) {
+                progressBar.setVisibility(View.VISIBLE);
+            }
 
-        checkPermission();
+            @Override
+            public void onFinish() {
+                checkPermission();
+                progressBar.setVisibility(View.GONE);
+
+            }
+        }.start();
 
     }
 
@@ -130,4 +146,9 @@ public class PhoneNumber extends AppCompatActivity {
     }
 
 
+    @Override
+    public void onBackPressed() {
+        countDownTimer.cancel();
+        super.onBackPressed();
+    }
 }

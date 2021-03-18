@@ -5,6 +5,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Bundle;
+import android.os.CountDownTimer;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ProgressBar;
@@ -15,6 +16,7 @@ import com.thisthat.thisthat.adapters.FriendCelebAdapter;
 import com.thisthat.thisthat.models.AllCelebsModel;
 import com.thisthat.thisthat.models.WouldYouRatherModel;
 import com.thisthat.thisthat.networking.RetrofitClient;
+import com.thisthat.thisthat.utils.Constants;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -30,6 +32,7 @@ public class AllCelebsActivity extends AppCompatActivity {
     private final ArrayList<AllCelebsModel> mArrayList = new ArrayList<>();
     ProgressBar progressBar;
     Button reload;
+    CountDownTimer countDownTimer;
     int friend;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,6 +52,17 @@ public class AllCelebsActivity extends AppCompatActivity {
             recyclerView.setAdapter(friendCelebAdapter);
         }
 
+        countDownTimer = new CountDownTimer(Constants.SECONDS,Constants.INTERVALS) {
+            @Override
+            public void onTick(long l) {
+                progressBar.setVisibility(View.VISIBLE);
+            }
+
+            @Override
+            public void onFinish() {
+                getAllCelebs();
+            }
+        }.start();
         getAllCelebs();
         reload.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -90,5 +104,11 @@ public class AllCelebsActivity extends AppCompatActivity {
                 Toast.makeText(getApplicationContext(), "Network error. Check connection", Toast.LENGTH_LONG).show();
             }
         });
+    }
+
+    @Override
+    public void onBackPressed() {
+        countDownTimer.cancel();
+        super.onBackPressed();
     }
 }

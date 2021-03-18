@@ -7,6 +7,7 @@ import androidx.appcompat.widget.LinearLayoutCompat;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.CountDownTimer;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ProgressBar;
@@ -18,6 +19,7 @@ import com.thisthat.thisthat.models.GetUserModel;
 import com.thisthat.thisthat.models.MessagesModel;
 import com.thisthat.thisthat.models.SpecificCelebModel;
 import com.thisthat.thisthat.networking.RetrofitClient;
+import com.thisthat.thisthat.utils.Constants;
 import com.thisthat.thisthat.utils.SharedPreferencesConfig;
 
 import retrofit2.Call;
@@ -25,13 +27,14 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class AllOthersActivity extends AppCompatActivity {
-    LinearLayoutCompat optionA,optionB,percentages;
+    LinearLayoutCompat optionA,optionB,percentages,mainView;
     TextView a,b,a_percent,b_percent;
     ProgressBar progressBar;
     Button reload;
     SharedPreferencesConfig sharedPreferencesConfig;
     String opA,opB,choice,phone,categoryId,friendPhone,key;
     int me,idd,friend,pickA,pickB,total;
+    CountDownTimer countDownTimer;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -39,6 +42,7 @@ public class AllOthersActivity extends AppCompatActivity {
         optionA = findViewById(R.id.optiona);
         optionB = findViewById(R.id.optionb);
         a = findViewById(R.id.a);
+        mainView = findViewById(R.id.mainView);
         b = findViewById(R.id.b);
         a_percent = findViewById(R.id.optiona_percent);
         b_percent = findViewById(R.id.optionb_percent);
@@ -57,12 +61,26 @@ public class AllOthersActivity extends AppCompatActivity {
         friendPhone = sharedPreferencesConfig.readFriendsPhone();
         categoryId = Integer.toString(idd);
 
-        if (friend == 0) {
-            getUser();
-        }else if (friend == 1){
-            optionA.setVisibility(View.VISIBLE);
-            optionB.setVisibility(View.VISIBLE);
-        }
+        countDownTimer = new CountDownTimer(Constants.SECONDS,Constants.INTERVALS) {
+            @Override
+            public void onTick(long l) {
+                progressBar.setVisibility(View.VISIBLE);
+                mainView.setVisibility(View.GONE);
+            }
+
+            @Override
+            public void onFinish() {
+                progressBar.setVisibility(View.GONE);
+                mainView.setVisibility(View.VISIBLE);
+                if (friend == 0) {
+                    getUser();
+                }else if (friend == 1){
+                    optionA.setVisibility(View.VISIBLE);
+                    optionB.setVisibility(View.VISIBLE);
+                }
+            }
+        }.start();
+
         optionA.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -493,5 +511,11 @@ public class AllOthersActivity extends AppCompatActivity {
                 Toast.makeText(getApplicationContext(), "Network error. Check your connection", Toast.LENGTH_LONG).show();
             }
         });
+    }
+
+    @Override
+    public void onBackPressed() {
+        countDownTimer.cancel();
+        super.onBackPressed();
     }
 }

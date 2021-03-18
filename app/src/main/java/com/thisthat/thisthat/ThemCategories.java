@@ -7,6 +7,7 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.CountDownTimer;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ProgressBar;
@@ -15,6 +16,7 @@ import android.widget.Toast;
 
 import com.thisthat.thisthat.models.GetUserModel;
 import com.thisthat.thisthat.networking.RetrofitClient;
+import com.thisthat.thisthat.utils.Constants;
 import com.thisthat.thisthat.utils.SharedPreferencesConfig;
 
 import retrofit2.Call;
@@ -28,6 +30,7 @@ public class ThemCategories extends AppCompatActivity {
     TextView title;
     ProgressBar progressBar;
     ConstraintLayout constraintLayout;
+    CountDownTimer countDownTimer;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,15 +47,28 @@ public class ThemCategories extends AppCompatActivity {
         ena = 0;
         sharedPreferencesConfig = new SharedPreferencesConfig(getApplicationContext());
         self = Integer.parseInt(getIntent().getExtras().getString("FRIEND"));
-        if (self == 0){
-            //self
-            title.setText("Self evaluation");
-            getUser();
-        }else if (self == 1){
-            //friend
-            title.setText("Evaluate your friend");
-            getFriend();
-        }
+        countDownTimer = new CountDownTimer(Constants.SECONDS,Constants.INTERVALS) {
+            @Override
+            public void onTick(long l) {
+                progressBar.setVisibility(View.VISIBLE);
+                constraintLayout.setVisibility(View.GONE);
+
+            }
+
+            @Override
+            public void onFinish() {
+                if (self == 0){
+                    //self
+                    title.setText("Self evaluation");
+                    getUser();
+                }else if (self == 1){
+                    //friend
+                    title.setText("Evaluate your friend");
+                    getFriend();
+                }
+            }
+        }.start();
+
 
         reload.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -256,5 +272,11 @@ public class ThemCategories extends AppCompatActivity {
                 Toast.makeText(getApplicationContext(), "Network error. Check your connection", Toast.LENGTH_LONG).show();
             }
         });
+    }
+
+    @Override
+    public void onBackPressed() {
+        countDownTimer.cancel();
+        super.onBackPressed();
     }
 }

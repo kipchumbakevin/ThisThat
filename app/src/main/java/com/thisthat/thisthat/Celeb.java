@@ -8,6 +8,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.os.CountDownTimer;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -38,10 +39,11 @@ public class Celeb extends AppCompatActivity {
     TextView ta,tb,a_percent,b_percent;
     ProgressBar progressBar;
     Button reload;
-    LinearLayoutCompat lina,linb,percentages;
+    LinearLayoutCompat lina,linb,percentages,mainview;
     String id,choice,key;
     int idd,friend,pickA,pickB,total;
     SharedPreferencesConfig sharedPreferencesConfig;
+    CountDownTimer countDownTimer;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -49,6 +51,7 @@ public class Celeb extends AppCompatActivity {
         a = findViewById(R.id.optiona);
         b = findViewById(R.id.optionb);
         ta = findViewById(R.id.texta);
+        mainview = findViewById(R.id.mainView);
         a_percent = findViewById(R.id.optiona_percent);
         b_percent = findViewById(R.id.optionb_percent);
         percentages = findViewById(R.id.percentage);
@@ -62,11 +65,24 @@ public class Celeb extends AppCompatActivity {
         friend = Integer.parseInt(getIntent().getExtras().getString("FRIEND"));
         idd = Integer.parseInt(id);
 
-        if (friend == 0) {
-            getSpecificCeleb();
-        }else if (friend == 1){
-            getSpecificCelebFrie();
-        }
+        countDownTimer = new CountDownTimer(Constants.SECONDS,Constants.INTERVALS) {
+            @Override
+            public void onTick(long l) {
+                progressBar.setVisibility(View.VISIBLE);
+                mainview.setVisibility(View.GONE);
+            }
+
+            @Override
+            public void onFinish() {
+                mainview.setVisibility(View.VISIBLE);
+                if (friend == 0) {
+                    getSpecificCeleb();
+                }else if (friend == 1){
+                    getSpecificCelebFrie();
+                }
+            }
+        }.start();
+
 
         lina.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -313,5 +329,11 @@ public class Celeb extends AppCompatActivity {
                 Toast.makeText(getApplicationContext(), "Network error. Check your connection", Toast.LENGTH_LONG).show();
             }
         });
+    }
+
+    @Override
+    public void onBackPressed() {
+        countDownTimer.cancel();
+        super.onBackPressed();
     }
 }

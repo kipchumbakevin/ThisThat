@@ -6,6 +6,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Bundle;
+import android.os.CountDownTimer;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ProgressBar;
@@ -16,6 +17,7 @@ import com.thisthat.thisthat.adapters.FetchResultsAdapter;
 import com.thisthat.thisthat.models.FetchResultsModel;
 import com.thisthat.thisthat.models.WouldYouRatherModel;
 import com.thisthat.thisthat.networking.RetrofitClient;
+import com.thisthat.thisthat.utils.Constants;
 import com.thisthat.thisthat.utils.SharedPreferencesConfig;
 
 import java.util.ArrayList;
@@ -36,6 +38,7 @@ public class CheckResults extends AppCompatActivity {
     ArrayList<FetchResultsModel>mArrayList = new ArrayList<>();
     int me,cat;
     String phone,friendPhone;
+    CountDownTimer countDownTimer;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -56,37 +59,47 @@ public class CheckResults extends AppCompatActivity {
         }else if (me == 2){
             recyclerView.setAdapter(fetchFriendsEvaAdapter);
         }
-        if (me == 1){
-            //evaluatee
-            if (cat == 1){
-                //lifestye
-                fetchLifestyleEvaluatee();
-            }else if (cat == 2){
-                //food
-                fetchFoodEvaluatee();
-            }else if (cat == 3){
-                //celeb
-                fetchCelebEvaluatee();
-            }else if (cat == 4){
-                //partner
-                fetchPartnerEvaluatee();
+        countDownTimer = new CountDownTimer(Constants.SECONDS,Constants.INTERVALS) {
+            @Override
+            public void onTick(long l) {
+                progressBar.setVisibility(View.VISIBLE);
             }
-        }else if (me == 2){
-            //evaluator
-            if (cat == 1){
-                //lifestye
-                fetchLifestyleEvaluator();
-            }else if (cat == 2){
-                //food
-                fetchFoodEvaluator();
-            }else if (cat == 3){
-                //celeb
-                fetchCelebEvaluator();
-            }else if (cat == 4){
-                //partner
-                fetchPartnerEvaluator();
+
+            @Override
+            public void onFinish() {
+                if (me == 1){
+                    //evaluatee
+                    if (cat == 1){
+                        //lifestye
+                        fetchLifestyleEvaluatee();
+                    }else if (cat == 2){
+                        //food
+                        fetchFoodEvaluatee();
+                    }else if (cat == 3){
+                        //celeb
+                        fetchCelebEvaluatee();
+                    }else if (cat == 4){
+                        //partner
+                        fetchPartnerEvaluatee();
+                    }
+                }else if (me == 2){
+                    //evaluator
+                    if (cat == 1){
+                        //lifestye
+                        fetchLifestyleEvaluator();
+                    }else if (cat == 2){
+                        //food
+                        fetchFoodEvaluator();
+                    }else if (cat == 3){
+                        //celeb
+                        fetchCelebEvaluator();
+                    }else if (cat == 4){
+                        //partner
+                        fetchPartnerEvaluator();
+                    }
+                }
             }
-        }
+        }.start();
         reload.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -389,5 +402,11 @@ public class CheckResults extends AppCompatActivity {
                 Toast.makeText(getApplicationContext(), "Network error. Check connection", Toast.LENGTH_LONG).show();
             }
         });
+    }
+
+    @Override
+    public void onBackPressed() {
+        countDownTimer.cancel();
+        super.onBackPressed();
     }
 }

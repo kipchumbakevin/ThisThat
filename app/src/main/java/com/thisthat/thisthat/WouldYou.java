@@ -6,6 +6,7 @@ import androidx.appcompat.widget.LinearLayoutCompat;
 
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.os.CountDownTimer;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ProgressBar;
@@ -16,6 +17,7 @@ import com.thisthat.thisthat.models.GetUserModel;
 import com.thisthat.thisthat.models.MessagesModel;
 import com.thisthat.thisthat.models.WouldYouRatherModel;
 import com.thisthat.thisthat.networking.RetrofitClient;
+import com.thisthat.thisthat.utils.Constants;
 import com.thisthat.thisthat.utils.SharedPreferencesConfig;
 
 import retrofit2.Call;
@@ -23,13 +25,14 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class WouldYou extends AppCompatActivity {
-    LinearLayoutCompat optionA,optionB,percentages;
+    LinearLayoutCompat optionA,optionB,percentages,mainview;
     TextView a,b,a_percent,b_percent;
     ProgressBar progressBar;
     Button reload;
     SharedPreferencesConfig sharedPreferencesConfig;
     String id;
     int ch,pickA,pickB,total,idd;
+    CountDownTimer countDownTimer;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -37,6 +40,7 @@ public class WouldYou extends AppCompatActivity {
         optionA = findViewById(R.id.optiona);
         optionB = findViewById(R.id.optionb);
         a = findViewById(R.id.a);
+        mainview = findViewById(R.id.mainView);
         a_percent = findViewById(R.id.optiona_percent);
         b_percent = findViewById(R.id.optionb_percent);
         b = findViewById(R.id.b);
@@ -47,7 +51,19 @@ public class WouldYou extends AppCompatActivity {
         idd = Integer.parseInt(getIntent().getExtras().getString("ID"));
         id = Integer.toString(idd);
 
-        getSpecific();
+        countDownTimer = new CountDownTimer(Constants.SECONDS,Constants.INTERVALS) {
+            @Override
+            public void onTick(long l) {
+                mainview.setVisibility(View.GONE);
+                progressBar.setVisibility(View.VISIBLE);
+            }
+
+            @Override
+            public void onFinish() {
+                mainview.setVisibility(View.VISIBLE);
+                getSpecific();
+            }
+        }.start();
         optionA.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -223,7 +239,7 @@ public class WouldYou extends AppCompatActivity {
     private void already() {
         AlertDialog.Builder al = new AlertDialog.Builder(this);
         al.setTitle("Done!")
-                .setMessage("You have already participated in this.\nBe sure to come back and check the results.\nNB:Results keep changing")
+                .setMessage("Results keep changing\nYou have already participated in this.\nBe sure to come back and check the results.")
                 .setPositiveButton("Cool", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
@@ -233,5 +249,11 @@ public class WouldYou extends AppCompatActivity {
         AlertDialog alertDialog = al.create();
         alertDialog.setCancelable(false);
         alertDialog.show();
+    }
+
+    @Override
+    public void onBackPressed() {
+        countDownTimer.cancel();
+        super.onBackPressed();
     }
 }

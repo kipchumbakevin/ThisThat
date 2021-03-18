@@ -5,6 +5,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Bundle;
+import android.os.CountDownTimer;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ProgressBar;
@@ -48,6 +49,7 @@ public class LifeFoodPatner extends AppCompatActivity {
     ProgressBar progressBar;
     Button reload;
     int me,friend;
+    CountDownTimer countDownTimer;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -65,31 +67,42 @@ public class LifeFoodPatner extends AppCompatActivity {
         friendLifestyleAdapter = new FriendLifestyleAdapter(getApplicationContext(),mArrayList);
         friendPartnerAdapter = new FriendPartnerAdapter(getApplicationContext(),mArrayList);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        if (me == 1){
-            title.setText("Lifestyle/Personality");
-            if (friend == 1){
-                recyclerView.setAdapter(friendLifestyleAdapter);
-            }else if (friend == 0) {
-                recyclerView.setAdapter(fetchLifeAdapter);
+        countDownTimer = new CountDownTimer(Constants.SECONDS,Constants.INTERVALS) {
+            @Override
+            public void onTick(long l) {
+                progressBar.setVisibility(View.VISIBLE);
             }
-            getAllL();
-        }else if (me == 2){
-            title.setText("Food/Beverage");
-            if (friend == 0) {
-                recyclerView.setAdapter(fetchFoodAdapter);
-            }else if (friend == 1){
-                recyclerView.setAdapter(friendFoodAdapter);
+
+            @Override
+            public void onFinish() {
+                if (me == 1){
+                    title.setText("Lifestyle/Personality");
+                    if (friend == 1){
+                        recyclerView.setAdapter(friendLifestyleAdapter);
+                    }else if (friend == 0) {
+                        recyclerView.setAdapter(fetchLifeAdapter);
+                    }
+                    getAllL();
+                }else if (me == 2){
+                    title.setText("Food/Beverage");
+                    if (friend == 0) {
+                        recyclerView.setAdapter(fetchFoodAdapter);
+                    }else if (friend == 1){
+                        recyclerView.setAdapter(friendFoodAdapter);
+                    }
+                    getAllF();
+                }else if (me == 3){
+                    title.setText("Partner type");
+                    if (friend == 0) {
+                        recyclerView.setAdapter(fetchPartnerAdapter);
+                    }else if (friend == 1){
+                        recyclerView.setAdapter(friendPartnerAdapter);
+                    }
+                    getAllP();
+                }
+
             }
-            getAllF();
-        }else if (me == 3){
-            title.setText("Partner type");
-            if (friend == 0) {
-                recyclerView.setAdapter(fetchPartnerAdapter);
-            }else if (friend == 1){
-                recyclerView.setAdapter(friendPartnerAdapter);
-            }
-            getAllP();
-        }
+        }.start();
 
         reload.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -204,4 +217,9 @@ public class LifeFoodPatner extends AppCompatActivity {
         });
     }
 
+    @Override
+    public void onBackPressed() {
+        countDownTimer.cancel();
+        super.onBackPressed();
+    }
 }

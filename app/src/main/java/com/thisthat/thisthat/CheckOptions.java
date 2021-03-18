@@ -10,22 +10,44 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.os.CountDownTimer;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ProgressBar;
+
+import com.thisthat.thisthat.utils.Constants;
 
 public class CheckOptions extends AppCompatActivity {
 
     Button evaluatee,evaluator;
     int allowed;
+    CountDownTimer countDownTimer;
+    ProgressBar progressBar;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_check_options);
         evaluatee = findViewById(R.id.evaluatee);
         evaluator = findViewById(R.id.evaluator);
+        progressBar = findViewById(R.id.progress);
         allowed = 0;
 
-        checkPermission();
+        countDownTimer = new CountDownTimer(Constants.SECONDS,Constants.INTERVALS) {
+            @Override
+            public void onTick(long l) {
+                progressBar.setVisibility(View.VISIBLE);
+                evaluatee.setVisibility(View.GONE);
+                evaluator.setVisibility(View.GONE);
+            }
+
+            @Override
+            public void onFinish() {
+                checkPermission();
+                progressBar.setVisibility(View.GONE);
+                evaluator.setVisibility(View.VISIBLE);
+                evaluatee.setVisibility(View.VISIBLE);
+            }
+        }.start();
         evaluatee.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -61,5 +83,11 @@ public class CheckOptions extends AppCompatActivity {
             //permission granted
             allowed = 1;
         }
+    }
+
+    @Override
+    public void onBackPressed() {
+        countDownTimer.cancel();
+        super.onBackPressed();
     }
 }

@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.os.CountDownTimer;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ProgressBar;
@@ -18,6 +19,7 @@ import com.thisthat.thisthat.adapters.ThemAdapter;
 import com.thisthat.thisthat.models.FetchContactListModel;
 import com.thisthat.thisthat.models.FetchResultsModel;
 import com.thisthat.thisthat.networking.RetrofitClient;
+import com.thisthat.thisthat.utils.Constants;
 import com.thisthat.thisthat.utils.SharedPreferencesConfig;
 
 import java.util.ArrayList;
@@ -37,6 +39,7 @@ public class EvaluatedMeThem extends AppCompatActivity {
     int friend,me;
     ArrayList<FetchContactListModel>mArrayList = new ArrayList<>();
     SharedPreferencesConfig sharedPreferencesConfig;
+    CountDownTimer countDownTimer;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -57,39 +60,50 @@ public class EvaluatedMeThem extends AppCompatActivity {
             recyclerView.setAdapter(themAdapter);
         }
 
-        if (friend == 1){
-            //fetch where i am the evaluatee
-            title.setText("Friends who have evaluated you");
-            if (me == 1){
-                //lifestyle
-                fetchLifestyleEvaluatee();
-            }else if (me == 2){
-                //food
-                fetchFoodEvaluatee();
-            }else if (me == 3){
-                //celeb
-                fetchCelebEvaluatee();
-            }else if (me == 4){
-                //partner
-                fetchPartnerEvaluatee();
+        countDownTimer = new CountDownTimer(Constants.SECONDS,Constants.INTERVALS) {
+            @Override
+            public void onTick(long l) {
+                progressBar.setVisibility(View.VISIBLE);
             }
-        }else if (friend == 2){
-            //fetch where i am the evaluator
-            title.setText("Friends you have evaluated");
-            if (me == 1){
-                //lifestyle
-                fetchLifestyleEvaluator();
-            }else if (me == 2){
-                //food
-                fetchFoodEvaluator();
-            }else if (me == 3){
-                //celeb
-                fetchCelebEvaluator();
-            }else if (me == 4){
-                //partner
-                fetchPartnerEvaluator();
+
+            @Override
+            public void onFinish() {
+                if (friend == 1){
+                    //fetch where i am the evaluatee
+                    title.setText("Friends who have evaluated you");
+                    if (me == 1){
+                        //lifestyle
+                        fetchLifestyleEvaluatee();
+                    }else if (me == 2){
+                        //food
+                        fetchFoodEvaluatee();
+                    }else if (me == 3){
+                        //celeb
+                        fetchCelebEvaluatee();
+                    }else if (me == 4){
+                        //partner
+                        fetchPartnerEvaluatee();
+                    }
+                }else if (friend == 2){
+                    //fetch where i am the evaluator
+                    title.setText("Friends you have evaluated");
+                    if (me == 1){
+                        //lifestyle
+                        fetchLifestyleEvaluator();
+                    }else if (me == 2){
+                        //food
+                        fetchFoodEvaluator();
+                    }else if (me == 3){
+                        //celeb
+                        fetchCelebEvaluator();
+                    }else if (me == 4){
+                        //partner
+                        fetchPartnerEvaluator();
+                    }
+                }
             }
-        }
+        }.start();
+
         reload.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -444,5 +458,11 @@ public class EvaluatedMeThem extends AppCompatActivity {
         AlertDialog alertDialog = al.create();
         alertDialog.setCancelable(false);
         alertDialog.show();
+    }
+
+    @Override
+    public void onBackPressed() {
+        countDownTimer.cancel();
+        super.onBackPressed();
     }
 }
