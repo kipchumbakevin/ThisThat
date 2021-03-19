@@ -93,6 +93,7 @@ public class Register extends AppCompatActivity {
         if (countryCodePicker.isValidFullNumber()) {
             progressBar.setVisibility(View.VISIBLE);
             String phon = countryCodePicker.getFullNumberWithPlus();
+            submit.setEnabled(false);
             String pin = pinS.getText().toString();
             Call<MessagesModel> call = RetrofitClient.getInstance(Register.this)
                     .getApiConnector()
@@ -101,6 +102,7 @@ public class Register extends AppCompatActivity {
                 @Override
                 public void onResponse(Call<MessagesModel> call, Response<MessagesModel> response) {
                     progressBar.setVisibility(View.GONE);
+                    submit.setEnabled(true);
                     if (response.code() == 201) {
                         sharedPreferencesConfig.saveAuthenticationInformation(phon);
                         go();
@@ -114,6 +116,7 @@ public class Register extends AppCompatActivity {
 
                 @Override
                 public void onFailure(Call<MessagesModel> call, Throwable t) {
+                    submit.setEnabled(true);
                     progressBar.setVisibility(View.GONE);
                     Toast.makeText(getApplicationContext(), "Network error. Check connection", Toast.LENGTH_LONG).show();
                 }

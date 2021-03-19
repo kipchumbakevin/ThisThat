@@ -42,6 +42,8 @@ public class MainActivity extends AppCompatActivity {
         self = findViewById(R.id.self);
         check = findViewById(R.id.check);
         progressBar = findViewById(R.id.progress);
+        share = findViewById(R.id.share);
+        rate = findViewById(R.id.rate);
 
         AudienceNetworkAds.initialize(this);
         adView = new AdView(this, getString(R.string.banner), AdSize.BANNER_HEIGHT_50);
@@ -108,6 +110,8 @@ public class MainActivity extends AppCompatActivity {
                 scenario.setVisibility(View.GONE);
                 friend.setVisibility(View.GONE);
                 self.setVisibility(View.GONE);
+                share.setVisibility(View.GONE);
+                rate.setVisibility(View.GONE);
                 check.setVisibility(View.GONE);
             }
 
@@ -116,6 +120,8 @@ public class MainActivity extends AppCompatActivity {
                 progressBar.setVisibility(View.GONE);
                 scenario.setVisibility(View.VISIBLE);
                 friend.setVisibility(View.VISIBLE);
+                share.setVisibility(View.VISIBLE);
+                rate.setVisibility(View.VISIBLE);
                 self.setVisibility(View.VISIBLE);
                 check.setVisibility(View.VISIBLE);
             }

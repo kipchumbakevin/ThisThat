@@ -32,10 +32,10 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class ThemCategories extends AppCompatActivity {
-    Button celebs,lifestyle,food,partner,reload;
+    Button celebs,lifestyle,food,partner,reload,invite;
     SharedPreferencesConfig sharedPreferencesConfig;
     int self,ena,ff;
-    TextView title,invite;
+    TextView title;
     ProgressBar progressBar;
     ConstraintLayout constraintLayout;
     private AdView adView,adV;
@@ -119,7 +119,6 @@ public class ThemCategories extends AppCompatActivity {
 
                 if (self == 0){
                     //self
-
                     title.setText("Self evaluation");
                     getUser();
                 }else if (self == 1){
