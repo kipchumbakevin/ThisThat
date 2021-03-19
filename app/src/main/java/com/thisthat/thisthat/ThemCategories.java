@@ -10,10 +10,18 @@ import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.view.View;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.facebook.ads.Ad;
+import com.facebook.ads.AdError;
+import com.facebook.ads.AdSize;
+import com.facebook.ads.AdView;
+import com.facebook.ads.AudienceNetworkAds;
+import com.facebook.ads.InterstitialAd;
+import com.facebook.ads.InterstitialAdListener;
 import com.thisthat.thisthat.models.GetUserModel;
 import com.thisthat.thisthat.networking.RetrofitClient;
 import com.thisthat.thisthat.utils.Constants;
@@ -27,11 +35,12 @@ public class ThemCategories extends AppCompatActivity {
     Button celebs,lifestyle,food,partner,reload;
     SharedPreferencesConfig sharedPreferencesConfig;
     int self,ena,ff;
-    TextView title;
+    TextView title,invite;
     ProgressBar progressBar;
     ConstraintLayout constraintLayout;
-    CountDownTimer countDownTimer;
-
+    private AdView adView,adV;
+    private InterstitialAd interstitialAd;
+    InterstitialAdListener interstitialAdListener;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -40,25 +49,77 @@ public class ThemCategories extends AppCompatActivity {
         lifestyle = findViewById(R.id.life);
         food = findViewById(R.id.food);
         partner = findViewById(R.id.partner);
+        invite = findViewById(R.id.invite);
         reload = findViewById(R.id.reload);
         progressBar = findViewById(R.id.progress);
         title = findViewById(R.id.title);
         constraintLayout = findViewById(R.id.constraint);
         ena = 0;
         sharedPreferencesConfig = new SharedPreferencesConfig(getApplicationContext());
-        self = Integer.parseInt(getIntent().getExtras().getString("FRIEND"));
-        countDownTimer = new CountDownTimer(Constants.SECONDS,Constants.INTERVALS) {
+        AudienceNetworkAds.initialize(this);
+        adView = new AdView(this, getString(R.string.banner), AdSize.BANNER_HEIGHT_50);
+        adV = new AdView(this,getString(R.string.banner),AdSize.BANNER_HEIGHT_50);
+
+        // Find the Ad Container
+        LinearLayout adContainer = (LinearLayout) findViewById(R.id.banner_container);
+        LinearLayout adC = (LinearLayout) findViewById(R.id.banner);
+
+        // Add the ad view to your activity layout
+        adContainer.addView(adView);
+        adC.addView(adV);
+
+        // Request an ad
+        adView.loadAd();
+        adV.loadAd();
+        interstitialAd = new InterstitialAd(this, getString(R.string.interstitial));
+        interstitialAdListener = new InterstitialAdListener() {
             @Override
-            public void onTick(long l) {
-                progressBar.setVisibility(View.VISIBLE);
-                constraintLayout.setVisibility(View.GONE);
+            public void onInterstitialDisplayed(Ad ad) {
+                // Interstitial ad displayed callback
+                //  Log.e(TAG, "Interstitial ad displayed.");
+            }
+
+            @Override
+            public void onInterstitialDismissed(Ad ad) {
+               onBackPressed();
 
             }
 
             @Override
-            public void onFinish() {
+            public void onError(Ad ad, AdError adError) {
+                // Ad error callback
+                //Log.e(TAG, "Interstitial ad failed to load: " + adError.getErrorMessage());
+            }
+
+            @Override
+            public void onAdLoaded(Ad ad) {
+                // Interstitial ad is loaded and ready to be displayed
+                // Log.d(TAG, "Interstitial ad is loaded and ready to be displayed!");
+                // Show the ad
+                //interstitialAd.show();
+            }
+
+            @Override
+            public void onAdClicked(Ad ad) {
+                // Ad clicked callback
+                // Log.d(TAG, "Interstitial ad clicked!");
+            }
+
+            @Override
+            public void onLoggingImpression(Ad ad) {
+                // Ad impression logged callback
+                // Log.d(TAG, "Interstitial ad impression logged!");
+            }
+        };
+        interstitialAd.loadAd(
+                interstitialAd.buildLoadAdConfig()
+                        .withAdListener(interstitialAdListener)
+                        .build());
+        self = Integer.parseInt(getIntent().getExtras().getString("FRIEND"));
+
                 if (self == 0){
                     //self
+
                     title.setText("Self evaluation");
                     getUser();
                 }else if (self == 1){
@@ -66,10 +127,33 @@ public class ThemCategories extends AppCompatActivity {
                     title.setText("Evaluate your friend");
                     getFriend();
                 }
-            }
-        }.start();
 
-
+                invite.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        if (ena >= 2){
+                            Intent intent = new Intent(Intent.ACTION_SEND);
+                            intent.setType("text/plain");
+                            String shareBody = "You are missing out the fun.Do you know me?Lets evaluate each other. Join and evaluate me now\n" +
+                                    "Download ThisThat App now at https://play.google.com/store/apps/details?id=" + ThemCategories.this.getPackageName();
+                            intent.putExtra(Intent.EXTRA_SUBJECT,ThemCategories.this.getString(R.string.app_name));
+                            intent.putExtra(Intent.EXTRA_TEXT, shareBody);
+                            startActivity(Intent.createChooser(intent, "Share via"));
+                        }else {
+                            AlertDialog.Builder all = new AlertDialog.Builder(ThemCategories.this);
+                            all.setMessage("To be evaluated by your friends, you need to finish evaluating yourself in at least one category\nFor more fun, evaluate yourself in all categories and invite your friends")
+                                    .setPositiveButton("Cool", new DialogInterface.OnClickListener() {
+                                        @Override
+                                        public void onClick(DialogInterface dialogInterface, int i) {
+                                            dialogInterface.dismiss();
+                                        }
+                                    });
+                            AlertDialog alertDialog = all.create();
+                            alertDialog.setCancelable(false);
+                            alertDialog.show();
+                        }
+                    }
+                });
         reload.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -89,12 +173,14 @@ public class ThemCategories extends AppCompatActivity {
                         intent.putExtra("ME", Integer.toString(1));
                         intent.putExtra("FRIEND", Integer.toString(self));
                         startActivity(intent);
+                        finish();
                     }
                 }else if (self == 1){
                     Intent intent = new Intent(ThemCategories.this, LifeFoodPatner.class);
                     intent.putExtra("ME", Integer.toString(1));
                     intent.putExtra("FRIEND", Integer.toString(self));
                     startActivity(intent);
+                    finish();
                 }
             }
         });
@@ -109,12 +195,14 @@ public class ThemCategories extends AppCompatActivity {
                         intent.putExtra("ME", Integer.toString(2));
                         intent.putExtra("FRIEND", Integer.toString(self));
                         startActivity(intent);
+                        finish();
                     }
                 }else if (self == 1){
                     Intent intent = new Intent(ThemCategories.this, LifeFoodPatner.class);
                     intent.putExtra("ME", Integer.toString(2));
                     intent.putExtra("FRIEND", Integer.toString(self));
                     startActivity(intent);
+                    finish();
                 }
             }
         });
@@ -129,12 +217,14 @@ public class ThemCategories extends AppCompatActivity {
                         intent.putExtra("ME", Integer.toString(3));
                         intent.putExtra("FRIEND", Integer.toString(self));
                         startActivity(intent);
+                        finish();
                     }
                 }else if (self == 1){
                     Intent intent = new Intent(ThemCategories.this, LifeFoodPatner.class);
                     intent.putExtra("ME", Integer.toString(3));
                     intent.putExtra("FRIEND", Integer.toString(self));
                     startActivity(intent);
+                    finish();
                 }
             }
         });
@@ -148,11 +238,13 @@ public class ThemCategories extends AppCompatActivity {
                         Intent intent = new Intent(ThemCategories.this, AllCelebsActivity.class);
                         intent.putExtra("FRIEND", Integer.toString(self));
                         startActivity(intent);
+                        finish();
                     }
                 }else if (self == 1){
                     Intent intent = new Intent(ThemCategories.this, AllCelebsActivity.class);
                     intent.putExtra("FRIEND", Integer.toString(self));
                     startActivity(intent);
+                    finish();
                 }
             }
         });
@@ -184,7 +276,7 @@ public class ThemCategories extends AppCompatActivity {
                     }
                     AlertDialog.Builder al = new AlertDialog.Builder(ThemCategories.this);
                     al.setTitle("Info")
-                            .setMessage("When evaluating yourself,choose what you like or what best describes you or what you love")
+                            .setMessage("When evaluating yourself,choose what you like or what best describes you or what you love\nTo be evaluated by your friend,you have to complete each category.\nHave fun!")
                             .setPositiveButton("Cool", new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialogInterface, int i) {
@@ -273,10 +365,22 @@ public class ThemCategories extends AppCompatActivity {
             }
         });
     }
-
+    @Override
+    protected void onDestroy() {
+        if (adView != null){
+            adView.destroy();
+        }
+        if (interstitialAd != null){
+            interstitialAd.destroy();
+        }
+        super.onDestroy();
+    }
     @Override
     public void onBackPressed() {
-        countDownTimer.cancel();
-        super.onBackPressed();
+        if (interstitialAd.isAdLoaded()){
+            interstitialAd.show();
+        }else {
+            super.onBackPressed();
+        }
     }
 }

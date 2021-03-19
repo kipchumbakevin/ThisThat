@@ -7,6 +7,14 @@
     android:orientation="vertical"
     android:background="@color/black"
     tools:context=".CheckOptions">
+    <LinearLayout
+        android:id="@+id/banner"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:orientation="vertical"
+        app:layout_constraintTop_toTopOf="parent"
+        />
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -17,7 +25,7 @@
         android:id="@+id/title"
         android:layout_marginStart="20dp"
         android:layout_marginEnd="20dp"
-        android:layout_marginTop="55dp"
+        android:layout_marginTop="52dp"
         android:background="@drawable/title"
         android:gravity="center"
         android:textColor="@color/black"
@@ -50,5 +58,12 @@
         android:text="Friends you have evaluated"
         android:id="@+id/evaluator"/>
 
-
+    <LinearLayout
+        android:id="@+id/banner_container"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toBottomOf="parent"
+        />
 </androidx.constraintlayout.widget.ConstraintLayout>

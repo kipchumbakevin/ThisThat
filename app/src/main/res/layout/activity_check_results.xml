@@ -6,10 +6,20 @@
     android:layout_height="match_parent"
     android:background="@color/black"
     tools:context=".CheckResults">
+    <LinearLayout
+        android:id="@+id/banner"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:orientation="vertical"
+        app:layout_constraintTop_toTopOf="parent"
+        />
     <androidx.recyclerview.widget.RecyclerView
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_marginTop="55dp"
+        android:layout_marginTop="52dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_marginBottom="52dp"
         app:layout_constraintTop_toTopOf="parent"
         android:id="@+id/recycler_view"/>
     <ProgressBar
@@ -35,5 +45,12 @@
         android:textSize="12sp"
         android:layout_height="wrap_content"
         android:padding="5dp" />
-
+    <LinearLayout
+        android:id="@+id/banner_container"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toBottomOf="parent"
+        />
 </androidx.constraintlayout.widget.ConstraintLayout>
