@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    android:background="@color/black"
+    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/optiona"
+        android:textSize="150dp"
+        android:layout_marginTop="245dp"
+        android:layout_centerHorizontal="true"
+        android:text="T"/>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/optiona"
+        android:textSize="150dp"
+        android:layout_marginStart="125dp"
+        android:layout_marginTop="280dp"
+        android:rotation="-90"
+        android:text="T"/>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/optionb"
+        android:textSize="150dp"
+        android:layout_marginStart="190dp"
+        android:layout_marginTop="280dp"
+        android:rotation="90"
+        android:text="T"/>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/optionb"
+        android:textSize="150dp"
+        android:layout_marginTop="318dp"
+        android:layout_centerHorizontal="true"
+        android:rotation="180"
+        android:text="T"/>
+    <TextView
+        android:layout_width="70dp"
+        android:layout_height="70dp"
+        android:padding="3dp"
+        android:textColor="#000"
+        android:textSize="25sp"
+        android:layout_centerHorizontal="true"
+        android:gravity="center"
+        android:layout_marginTop="345dp"
+        android:textStyle="bold"
+        android:background="@drawable/text"
+        android:text="OR"/>
+
+</RelativeLayout>

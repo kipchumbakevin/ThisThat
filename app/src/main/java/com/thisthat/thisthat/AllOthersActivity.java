@@ -86,50 +86,50 @@ public class AllOthersActivity extends AppCompatActivity {
         // Request an ad
         adView.loadAd();
         adV.loadAd();
-        interstitialAd = new InterstitialAd(this, getString(R.string.interstitial));
-        interstitialAdListener = new InterstitialAdListener() {
-            @Override
-            public void onInterstitialDisplayed(Ad ad) {
-                // Interstitial ad displayed callback
-                //  Log.e(TAG, "Interstitial ad displayed.");
-            }
-
-            @Override
-            public void onInterstitialDismissed(Ad ad) {
-                onBackPressed();
-
-            }
-
-            @Override
-            public void onError(Ad ad, AdError adError) {
-                // Ad error callback
-                //Log.e(TAG, "Interstitial ad failed to load: " + adError.getErrorMessage());
-            }
-
-            @Override
-            public void onAdLoaded(Ad ad) {
-                // Interstitial ad is loaded and ready to be displayed
-                // Log.d(TAG, "Interstitial ad is loaded and ready to be displayed!");
-                // Show the ad
-                //interstitialAd.show();
-            }
-
-            @Override
-            public void onAdClicked(Ad ad) {
-                // Ad clicked callback
-                // Log.d(TAG, "Interstitial ad clicked!");
-            }
-
-            @Override
-            public void onLoggingImpression(Ad ad) {
-                // Ad impression logged callback
-                // Log.d(TAG, "Interstitial ad impression logged!");
-            }
-        };
-        interstitialAd.loadAd(
-                interstitialAd.buildLoadAdConfig()
-                        .withAdListener(interstitialAdListener)
-                        .build());
+//        interstitialAd = new InterstitialAd(this, getString(R.string.interstitial));
+//        interstitialAdListener = new InterstitialAdListener() {
+//            @Override
+//            public void onInterstitialDisplayed(Ad ad) {
+//                // Interstitial ad displayed callback
+//                //  Log.e(TAG, "Interstitial ad displayed.");
+//            }
+//
+//            @Override
+//            public void onInterstitialDismissed(Ad ad) {
+//                onBackPressed();
+//
+//            }
+//
+//            @Override
+//            public void onError(Ad ad, AdError adError) {
+//                // Ad error callback
+//                //Log.e(TAG, "Interstitial ad failed to load: " + adError.getErrorMessage());
+//            }
+//
+//            @Override
+//            public void onAdLoaded(Ad ad) {
+//                // Interstitial ad is loaded and ready to be displayed
+//                // Log.d(TAG, "Interstitial ad is loaded and ready to be displayed!");
+//                // Show the ad
+//                //interstitialAd.show();
+//            }
+//
+//            @Override
+//            public void onAdClicked(Ad ad) {
+//                // Ad clicked callback
+//                // Log.d(TAG, "Interstitial ad clicked!");
+//            }
+//
+//            @Override
+//            public void onLoggingImpression(Ad ad) {
+//                // Ad impression logged callback
+//                // Log.d(TAG, "Interstitial ad impression logged!");
+//            }
+//        };
+//        interstitialAd.loadAd(
+//                interstitialAd.buildLoadAdConfig()
+//                        .withAdListener(interstitialAdListener)
+//                        .build());
         countDownTimer = new CountDownTimer(Constants.SECONDS,Constants.INTERVALS) {
             @Override
             public void onTick(long l) {
@@ -597,10 +597,7 @@ public class AllOthersActivity extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         countDownTimer.cancel();
-        if (interstitialAd.isAdLoaded()){
-            interstitialAd.show();
-        }else {
-            super.onBackPressed();
-        }
+        super.onBackPressed();
+
     }
 }
