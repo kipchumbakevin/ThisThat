@@ -211,6 +211,8 @@ public class Celeb extends AppCompatActivity {
             public void onResponse(Call<SpecificCelebModel> call, Response<SpecificCelebModel> response) {
                 progressBar.setVisibility(View.GONE);
                 if (response.isSuccessful()) {
+                    lina.setVisibility(View.VISIBLE);
+                    linb.setVisibility(View.VISIBLE);
                     Glide.with(Celeb.this).load(Constants.BASE_URL+"images/"+response.body().getImage().getImage1())
                             .fitCenter()
                             .centerCrop()

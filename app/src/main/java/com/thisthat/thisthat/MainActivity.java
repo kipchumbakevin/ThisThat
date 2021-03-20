@@ -161,7 +161,7 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View view) {
                 Intent intent = new Intent(Intent.ACTION_SEND);
                 intent.setType("text/plain");
-                String shareBody = "You are missing out the fun.Do you know me?Lets evaluate each other. Join and evaluate me now\n" +
+                String shareBody = "Check out this amazing app where you evaluate your friends and you see the results.Lets evaluate each other. Join and evaluate me now\n" +
                         "Download ThisThat App now at https://play.google.com/store/apps/details?id=" + MainActivity.this.getPackageName();
                 intent.putExtra(Intent.EXTRA_SUBJECT,MainActivity.this.getString(R.string.app_name));
                 intent.putExtra(Intent.EXTRA_TEXT, shareBody);

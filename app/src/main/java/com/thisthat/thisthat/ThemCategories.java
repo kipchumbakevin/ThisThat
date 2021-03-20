@@ -124,6 +124,7 @@ public class ThemCategories extends AppCompatActivity {
                 }else if (self == 1){
                     //friend
                     title.setText("Evaluate your friend");
+                    invite.setVisibility(View.GONE);
                     getFriend();
                 }
 
@@ -133,7 +134,7 @@ public class ThemCategories extends AppCompatActivity {
                         if (ena >= 2){
                             Intent intent = new Intent(Intent.ACTION_SEND);
                             intent.setType("text/plain");
-                            String shareBody = "You are missing out the fun.Do you know me?Lets evaluate each other. Join and evaluate me now\n" +
+                            String shareBody = "You are missing out the fun.I have already evaluated myself.Lets evaluate each other and see the results. Join and evaluate me now\n" +
                                     "Download ThisThat App now at https://play.google.com/store/apps/details?id=" + ThemCategories.this.getPackageName();
                             intent.putExtra(Intent.EXTRA_SUBJECT,ThemCategories.this.getString(R.string.app_name));
                             intent.putExtra(Intent.EXTRA_TEXT, shareBody);
@@ -211,7 +212,7 @@ public class ThemCategories extends AppCompatActivity {
                 if (self == 0) {
                     if (ena < 4) {
                         Toast.makeText(ThemCategories.this, "Please complete the celebrity section first", Toast.LENGTH_SHORT).show();
-                    } else if (ena == 4){
+                    } else if (ena >= 4){
                         Intent intent = new Intent(ThemCategories.this, LifeFoodPatner.class);
                         intent.putExtra("ME", Integer.toString(3));
                         intent.putExtra("FRIEND", Integer.toString(self));
@@ -270,7 +271,7 @@ public class ThemCategories extends AppCompatActivity {
                     }else if (response.body().getComplete() == 3){
                         ena = 3;
 
-                    }else if (response.body().getComplete() == 4){
+                    }else if (response.body().getComplete() >= 4){
                         ena = 4;
                     }
                     AlertDialog.Builder al = new AlertDialog.Builder(ThemCategories.this);
@@ -333,7 +334,7 @@ public class ThemCategories extends AppCompatActivity {
                     }else if (response.body().getComplete() == 5){
                         lifestyle.setVisibility(View.VISIBLE);
                         food.setVisibility(View.VISIBLE);
-                        partner.setVisibility(View.GONE);
+                        partner.setVisibility(View.VISIBLE);
                         celebs.setVisibility(View.VISIBLE);
                     }
                     AlertDialog.Builder al = new AlertDialog.Builder(ThemCategories.this);

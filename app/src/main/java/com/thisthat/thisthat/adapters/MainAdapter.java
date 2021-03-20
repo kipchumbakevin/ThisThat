@@ -130,7 +130,7 @@ public class MainAdapter extends RecyclerView.Adapter<MainAdapter.ViewHolder> {
                                 public void onClick(DialogInterface dialogInterface, int i) {
                                     Intent intent = new Intent(Intent.ACTION_SEND);
                                     intent.setType("text/plain");
-                                    String shareBody = "You are missing out the fun. Lets evaluate each other. Join me now\n" +
+                                    String shareBody = "You are missing out the fun. I want to evaluate you and see the results.Lets evaluate each other. Join me now\n" +
                                             "Download ThisThat App now at https://play.google.com/store/apps/details?id=" + activity.getPackageName();
                                     intent.putExtra(Intent.EXTRA_SUBJECT,activity.getString(R.string.app_name));
                                     intent.putExtra(Intent.EXTRA_TEXT, shareBody);
