@@ -28,6 +28,15 @@ public class GetUserModel {
     @SerializedName("complete")
     @Expose
     private Integer complete;
+    @SerializedName("completeP")
+    @Expose
+    private Integer completeP;
+    @SerializedName("completeF")
+    @Expose
+    private Integer completeF;
+    @SerializedName("completeC")
+    @Expose
+    private Integer completeC;
     @SerializedName("would")
     @Expose
     private Integer would;
@@ -100,6 +109,27 @@ public class GetUserModel {
 
     public void setComplete(Integer complete) {
         this.complete = complete;
+    }
+    public Integer getCompleteF() {
+        return completeF;
+    }
+
+    public void setCompleteF(Integer completeF) {
+        this.completeF = completeF;
+    }
+    public Integer getCompleteC() {
+        return completeC;
+    }
+
+    public void setCompleteC(Integer completeC) {
+        this.completeC = completeC;
+    }
+    public Integer getCompleteP() {
+        return completeP;
+    }
+
+    public void setCompleteP(Integer completeP) {
+        this.completeP = completeP;
     }
 
     public Integer getWould() {

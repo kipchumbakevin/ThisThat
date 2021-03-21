@@ -99,10 +99,11 @@ public class MainAdapter extends RecyclerView.Adapter<MainAdapter.ViewHolder> {
             public void onResponse(Call<GetUserModel> call, Response<GetUserModel> response) {
                 progressBar.setVisibility(View.GONE);
                 if (response.isSuccessful()) {
-                    if (response.body().getComplete()<1){
+                    if (response.body().getComplete()== 0 && response.body().getCompleteF()==0 &&
+                            response.body().getCompleteC()==0 && response.body().getCompleteP()==0 ){
                         AlertDialog.Builder al = new AlertDialog.Builder(activity);
                         al.setTitle("Info")
-                                .setMessage("It seems your friend has not evaluated themselves in at least one category.\nTell your friend to complete each category or at least lifestyle/personality category")
+                                .setMessage("It seems your friend has not evaluated themselves in at least one category.\nTell your friend to complete each category or at least one category")
                                 .setPositiveButton("Cool", new DialogInterface.OnClickListener() {
                                     @Override
                                     public void onClick(DialogInterface dialogInterface, int i) {
@@ -112,7 +113,8 @@ public class MainAdapter extends RecyclerView.Adapter<MainAdapter.ViewHolder> {
                         AlertDialog alertDialog = al.create();
                         alertDialog.setCancelable(false);
                         alertDialog.show();
-                    }else if (response.body().getComplete() >=1){
+                    }else if (response.body().getComplete()== 1 || response.body().getCompleteF()== 1 ||
+                            response.body().getCompleteC()== 1 || response.body().getCompleteP()== 1 ){
                         sharedPreferencesConfig.saveFriend(phone);
                         Intent intent = new Intent(activity, ThemCategories.class);
                         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);

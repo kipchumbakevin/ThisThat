@@ -157,6 +157,7 @@ public class PhoneNumber extends AppCompatActivity {
             AlertDialog alertDialog = al.create();
             alertDialog.setCancelable(false);
             alertDialog.show();
+            Toast.makeText(this, "Loading...", Toast.LENGTH_SHORT).show();
             getContactList();
         }
     }

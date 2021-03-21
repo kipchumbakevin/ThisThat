@@ -34,7 +34,7 @@ import retrofit2.Response;
 public class ThemCategories extends AppCompatActivity {
     Button celebs,lifestyle,food,partner,reload,invite;
     SharedPreferencesConfig sharedPreferencesConfig;
-    int self,ena,ff;
+    int self,ena,enaf,enaC,enaP,ff;
     TextView title;
     ProgressBar progressBar;
     ConstraintLayout constraintLayout;
@@ -131,7 +131,7 @@ public class ThemCategories extends AppCompatActivity {
                 invite.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        if (ena >= 2){
+                        if (ena == 1){
                             Intent intent = new Intent(Intent.ACTION_SEND);
                             intent.setType("text/plain");
                             String shareBody = "You are missing out the fun.I have already evaluated myself.Lets evaluate each other and see the results. Join and evaluate me now\n" +
@@ -168,13 +168,12 @@ public class ThemCategories extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 if (self == 0) {
-                    if (ena >= 0) {
                         Intent intent = new Intent(ThemCategories.this, LifeFoodPatner.class);
                         intent.putExtra("ME", Integer.toString(1));
                         intent.putExtra("FRIEND", Integer.toString(self));
                         startActivity(intent);
                         finish();
-                    }
+
                 }else if (self == 1){
                     Intent intent = new Intent(ThemCategories.this, LifeFoodPatner.class);
                     intent.putExtra("ME", Integer.toString(1));
@@ -188,15 +187,13 @@ public class ThemCategories extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 if (self == 0) {
-                    if (ena < 2) {
-                        Toast.makeText(ThemCategories.this, "Please complete the lifestyle section first", Toast.LENGTH_SHORT).show();
-                    } else if (ena >= 2){
+
                         Intent intent = new Intent(ThemCategories.this, LifeFoodPatner.class);
                         intent.putExtra("ME", Integer.toString(2));
                         intent.putExtra("FRIEND", Integer.toString(self));
                         startActivity(intent);
                         finish();
-                    }
+
                 }else if (self == 1){
                     Intent intent = new Intent(ThemCategories.this, LifeFoodPatner.class);
                     intent.putExtra("ME", Integer.toString(2));
@@ -210,15 +207,11 @@ public class ThemCategories extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 if (self == 0) {
-                    if (ena < 4) {
-                        Toast.makeText(ThemCategories.this, "Please complete the celebrity section first", Toast.LENGTH_SHORT).show();
-                    } else if (ena >= 4){
                         Intent intent = new Intent(ThemCategories.this, LifeFoodPatner.class);
                         intent.putExtra("ME", Integer.toString(3));
                         intent.putExtra("FRIEND", Integer.toString(self));
                         startActivity(intent);
                         finish();
-                    }
                 }else if (self == 1){
                     Intent intent = new Intent(ThemCategories.this, LifeFoodPatner.class);
                     intent.putExtra("ME", Integer.toString(3));
@@ -232,14 +225,11 @@ public class ThemCategories extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 if (self == 0) {
-                    if (ena < 3) {
-                        Toast.makeText(ThemCategories.this, "Please complete the food section first", Toast.LENGTH_SHORT).show();
-                    } else if (ena >= 3){
                         Intent intent = new Intent(ThemCategories.this, AllCelebsActivity.class);
                         intent.putExtra("FRIEND", Integer.toString(self));
                         startActivity(intent);
                         finish();
-                    }
+
                 }else if (self == 1){
                     Intent intent = new Intent(ThemCategories.this, AllCelebsActivity.class);
                     intent.putExtra("FRIEND", Integer.toString(self));
@@ -263,20 +253,13 @@ public class ThemCategories extends AppCompatActivity {
                 progressBar.setVisibility(View.GONE);
                 if (response.isSuccessful()) {
                     constraintLayout.setVisibility(View.VISIBLE);
-                    if (response.body().getComplete() == 0){
-                        ena = 0;
-                    }else if (response.body().getComplete() == 2){
-                        ena = 2;
-
-                    }else if (response.body().getComplete() == 3){
-                        ena = 3;
-
-                    }else if (response.body().getComplete() >= 4){
-                        ena = 4;
+                    if (response.body().getComplete() == 1 || response.body().getCompleteF() == 1 ||
+                            response.body().getCompleteC() == 1 || response.body().getCompleteP() == 1){
+                        ena = 1;
                     }
                     AlertDialog.Builder al = new AlertDialog.Builder(ThemCategories.this);
                     al.setTitle("Info")
-                            .setMessage("When evaluating yourself,choose what you like or what best describes you or what you love\nTo be evaluated by your friend,you have to complete each category.\nHave fun!")
+                            .setMessage("When evaluating yourself,choose what you like or what best describes you or what you love\nTo be evaluated by your friend,you have to complete at least one category.\nHave fun!")
                             .setPositiveButton("Cool", new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialogInterface, int i) {
@@ -320,22 +303,20 @@ public class ThemCategories extends AppCompatActivity {
                 progressBar.setVisibility(View.GONE);
                 if (response.isSuccessful()) {
                     constraintLayout.setVisibility(View.VISIBLE);
-                    if (response.body().getComplete() == 2){
+                    if (response.body().getComplete() == 1){
+                        ena = 1;
                         lifestyle.setVisibility(View.VISIBLE);
-                    }else if (response.body().getComplete() == 3){
-                        lifestyle.setVisibility(View.VISIBLE);
+                    }if (response.body().getCompleteF() == 1){
+                        ena = 1;
                         food.setVisibility(View.VISIBLE);
 
-                    }else if (response.body().getComplete() == 4){
-                        lifestyle.setVisibility(View.VISIBLE);
-                        food.setVisibility(View.VISIBLE);
+                    }if (response.body().getCompleteC() == 1){
+                        ena = 1;
                         celebs.setVisibility(View.VISIBLE);
 
-                    }else if (response.body().getComplete() == 5){
-                        lifestyle.setVisibility(View.VISIBLE);
-                        food.setVisibility(View.VISIBLE);
+                    }if (response.body().getCompleteP() == 1){
+                        ena = 1;
                         partner.setVisibility(View.VISIBLE);
-                        celebs.setVisibility(View.VISIBLE);
                     }
                     AlertDialog.Builder al = new AlertDialog.Builder(ThemCategories.this);
                     al.setTitle("Info")

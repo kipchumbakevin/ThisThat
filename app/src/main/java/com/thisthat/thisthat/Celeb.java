@@ -287,6 +287,8 @@ public class Celeb extends AppCompatActivity {
         String phone = sharedPreferencesConfig.readClientsPhone();
         progressBar.setVisibility(View.VISIBLE);
         reload.setVisibility(View.GONE);
+        lina.setVisibility(View.GONE);
+        linb.setVisibility(View.GONE);
         Call<GetUserModel> call = RetrofitClient.getInstance(Celeb.this)
                 .getApiConnector()
                 .getuser(phone);
