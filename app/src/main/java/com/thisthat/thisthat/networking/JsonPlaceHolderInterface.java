@@ -6,6 +6,7 @@ import com.thisthat.thisthat.models.FetchContactListModel;
 import com.thisthat.thisthat.models.FetchResultsModel;
 import com.thisthat.thisthat.models.GetUserModel;
 import com.thisthat.thisthat.models.MessagesModel;
+import com.thisthat.thisthat.models.NeverModel;
 import com.thisthat.thisthat.models.SpecificCelebModel;
 import com.thisthat.thisthat.models.WouldYouRatherModel;
 
@@ -20,6 +21,8 @@ import retrofit2.http.POST;
 public interface JsonPlaceHolderInterface {
     @GET("api/getwould")
     Call<List<WouldYouRatherModel>> getWould();
+    @GET("api/getnever")
+    Call<List<NeverModel>> getNever();
 
     @GET("api/getallceleb")
     Call<List<AllCelebsModel>> getAllCelebs();
@@ -45,6 +48,18 @@ public interface JsonPlaceHolderInterface {
     @FormUrlEncoded
     @POST("api/answerwould")
     Call<MessagesModel> answer(
+            @Field("phone")String phone,
+            @Field("key")String key,
+            @Field("id")String id
+    );
+    @FormUrlEncoded
+    @POST("api/getsnever")
+    Call<NeverModel> getNS(
+            @Field("id")String id
+    );
+    @FormUrlEncoded
+    @POST("api/answernever")
+    Call<MessagesModel> answerN(
             @Field("phone")String phone,
             @Field("key")String key,
             @Field("id")String id

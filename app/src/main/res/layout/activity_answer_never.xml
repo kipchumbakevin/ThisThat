@@ -5,7 +5,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/black"
-    tools:context=".WouldYou">
+    tools:context=".AnswerNever">
+
     <LinearLayout
         android:id="@+id/banner"
         android:layout_width="match_parent"
@@ -16,41 +17,41 @@
         />
     <androidx.appcompat.widget.LinearLayoutCompat
         android:layout_width="match_parent"
+        android:orientation="vertical"
         android:layout_marginTop="52dp"
         android:layout_marginBottom="52dp"
-        android:orientation="vertical"
         android:id="@+id/mainView"
         android:layout_height="match_parent">
-    <androidx.appcompat.widget.LinearLayoutCompat
-        android:layout_width="match_parent"
-        android:layout_weight="1"
-        android:id="@+id/optiona"
-        android:orientation="vertical"
-        android:background="@color/optiona"
-        android:layout_height="0dp">
-        <TextView
-            android:id="@+id/a"
+        <androidx.appcompat.widget.LinearLayoutCompat
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:textColor="@color/white"
-            android:gravity="center"
-            android:text="GO ONE YEAR WITHOUT ANY MUSIC"/>
-    </androidx.appcompat.widget.LinearLayoutCompat>
-    <androidx.appcompat.widget.LinearLayoutCompat
-        android:layout_width="match_parent"
-        android:layout_weight="1"
-        android:background="@color/optionb"
-        android:id="@+id/optionb"
-        android:orientation="vertical"
-        android:layout_height="0dp">
-        <TextView
-            android:id="@+id/b"
+            android:layout_weight="1"
+            android:id="@+id/optiona"
+            android:orientation="vertical"
+            android:background="@color/optiona"
+            android:layout_height="0dp">
+            <TextView
+                android:id="@+id/a"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:textColor="@color/white"
+                android:gravity="center"
+                android:text="HAVE"/>
+        </androidx.appcompat.widget.LinearLayoutCompat>
+        <androidx.appcompat.widget.LinearLayoutCompat
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:textColor="@color/white"
-            android:gravity="center"
-            android:text="GO ONE YEAR WITHOUT VIDEO GAMES"/>
-    </androidx.appcompat.widget.LinearLayoutCompat>
+            android:layout_weight="1"
+            android:background="@color/optionb"
+            android:id="@+id/optionb"
+            android:orientation="vertical"
+            android:layout_height="0dp">
+            <TextView
+                android:id="@+id/b"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:textColor="@color/white"
+                android:gravity="center"
+                android:text="NEVER"/>
+        </androidx.appcompat.widget.LinearLayoutCompat>
     </androidx.appcompat.widget.LinearLayoutCompat>
     <View
         android:layout_width="match_parent"
@@ -105,6 +106,21 @@
             android:textStyle="bold"
             android:textColor="@color/optionb"/>
     </androidx.appcompat.widget.LinearLayoutCompat>
+    <TextView
+        android:layout_width="match_parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:text="USED A FAKE ID"
+        android:layout_marginStart="5dp"
+        android:id="@+id/nevertitle"
+        android:layout_marginTop="52dp"
+        android:layout_marginEnd="5dp"
+        android:gravity="center"
+        android:padding="5dp"
+        android:background="@drawable/tttt"
+        android:textAllCaps="true"
+        android:textColor="@color/black"
+        android:layout_height="wrap_content"/>
     <ProgressBar
         android:id="@+id/progress"
         android:layout_width="60dp"
@@ -119,12 +135,13 @@
         android:layout_width="wrap_content"
         android:visibility="gone"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        android:text="Reload"
-        android:textSize="12sp"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        android:layout_height="wrap_content"/>
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:text="reload"
+        android:textSize="12sp"
+        android:layout_height="wrap_content"
+        android:padding="5dp" />
     <ImageButton
         android:layout_width="60dp"
         android:layout_height="60dp"

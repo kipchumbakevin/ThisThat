@@ -10,27 +10,42 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.ThisThat"
         android:usesCleartextTraffic="true">
-        <activity android:name=".PolicyActivity"
-            android:screenOrientation="portrait"/>
-        <activity android:name=".ResultsCategories"
-            android:screenOrientation="portrait"/>
-        <activity android:name=".EvaluatedMeThem"
-            android:screenOrientation="portrait"/>
-        <activity android:name=".CheckResults"
-            android:screenOrientation="portrait"/>
-        <activity android:name=".CheckOptions"
-            android:screenOrientation="portrait"/>
-        <activity android:name=".PhoneNumber"
-            android:screenOrientation="portrait"/>
-        <activity android:name=".ThemCategories"
-            android:screenOrientation="portrait"/>
-        <activity android:name=".LifeFoodPatner"
-            android:screenOrientation="portrait"/>
-        <activity android:name=".AllOthersActivity"
-            android:screenOrientation="portrait"/>
-        <activity android:name=".AllCelebsActivity"
-            android:screenOrientation="portrait"/>
-        <activity android:name=".Register"
+        <activity android:name=".AnswerNever"></activity>
+        <activity
+            android:name=".NeverHave"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".PolicyActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ResultsCategories"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".EvaluatedMeThem"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".CheckResults"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".CheckOptions"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".PhoneNumber"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ThemCategories"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".LifeFoodPatner"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".AllOthersActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".AllCelebsActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".Register"
             android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -38,14 +53,18 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".Celeb"
-            android:screenOrientation="portrait"/>
-        <activity android:name=".Scenarios"
-            android:screenOrientation="portrait"/>
-        <activity android:name=".WouldYou"
-            android:screenOrientation="portrait"/>
-        <activity android:name=".MainActivity"
-            android:screenOrientation="portrait"/>
+        <activity
+            android:name=".Celeb"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".Scenarios"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".WouldYou"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".MainActivity"
+            android:screenOrientation="portrait" />
     </application>
     <uses-permission android:name="android.permission.INTERNET" />
 

@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -38,12 +39,11 @@ public class WouldYou extends AppCompatActivity {
     ProgressBar progressBar;
     Button reload;
     SharedPreferencesConfig sharedPreferencesConfig;
-    String id;
-    int ch,pickA,pickB,total,idd;
+    String idd,ids;
+    int ch,pickA,pickB,total,pp;
     CountDownTimer countDownTimer;
+    ImageButton next,previous;
     private AdView adView,adV;
-    private InterstitialAd interstitialAd;
-    InterstitialAdListener interstitialAdListener;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -55,12 +55,16 @@ public class WouldYou extends AppCompatActivity {
         a_percent = findViewById(R.id.optiona_percent);
         b_percent = findViewById(R.id.optionb_percent);
         b = findViewById(R.id.b);
+        next = findViewById(R.id.next);
+        previous = findViewById(R.id.previous);
         percentages = findViewById(R.id.percentage);
+        pp = 0;
         progressBar = findViewById(R.id.progress);
         reload = findViewById(R.id.reload);
         sharedPreferencesConfig = new SharedPreferencesConfig(getApplicationContext());
-        idd = Integer.parseInt(getIntent().getExtras().getString("ID"));
-        id = Integer.toString(idd);
+        idd = getIntent().getExtras().getString("ID");
+        ids = getIntent().getExtras().getString("ID");
+
         AudienceNetworkAds.initialize(this);
         adView = new AdView(this, getString(R.string.banner), AdSize.BANNER_HEIGHT_50);
         adV = new AdView(this,getString(R.string.banner),AdSize.BANNER_HEIGHT_50);
@@ -145,16 +149,37 @@ public class WouldYou extends AppCompatActivity {
                 pickedB();
             }
         });
+        next.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                pp = 1;
+                getSpecificN();
+            }
+        });
+        previous.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                pp = 2;
+               getSpecificP();
+            }
+        });
         reload.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                if (pp == 1){
+                    getSpecificN();
+                }else if (pp == 2){
+                    getSpecificP();
+                }else {
                     getSpecific();
+                }
             }
         });
     }
 
     private void getSpecific() {
         progressBar.setVisibility(View.VISIBLE);
+        String id = idd;
         reload.setVisibility(View.GONE);
         optionA.setVisibility(View.GONE);
         optionB.setVisibility(View.GONE);
@@ -187,10 +212,87 @@ public class WouldYou extends AppCompatActivity {
             }
         });
     }
+    private void getSpecificN() {
+        progressBar.setVisibility(View.VISIBLE);
+        int i = Integer.parseInt(ids)+1;
+        String id = Integer.toString(i);
+        reload.setVisibility(View.GONE);
+        optionA.setVisibility(View.GONE);
+        optionB.setVisibility(View.GONE);
+        Call<WouldYouRatherModel> call = RetrofitClient.getInstance(WouldYou.this)
+                .getApiConnector()
+                .speci(id);
+        call.enqueue(new Callback<WouldYouRatherModel>() {
+            @Override
+            public void onResponse(Call<WouldYouRatherModel> call, Response<WouldYouRatherModel> response) {
+                progressBar.setVisibility(View.GONE);
+                if (response.isSuccessful()) {
+                    idd = Integer.toString(response.body().getId());
+                    ids = Integer.toString(response.body().getId());
+                    pickA = response.body().getPickA();
+                    pickB = response.body().getPickB();
+                    total = response.body().getTotal();
+                    a.setText(response.body().getOptionA());
+                    b.setText(response.body().getOptionB());
+                    getUser();
+                } else {
+                    reload.setVisibility(View.VISIBLE);
+                    Toast.makeText(getApplicationContext(), "Server error", Toast.LENGTH_SHORT).show();
+                }
+
+            }
+
+            @Override
+            public void onFailure(Call<WouldYouRatherModel> call, Throwable t) {
+                progressBar.setVisibility(View.GONE);
+                reload.setVisibility(View.VISIBLE);
+                Toast.makeText(getApplicationContext(), "Network error. Check connection", Toast.LENGTH_LONG).show();
+            }
+        });
+    }
+    private void getSpecificP() {
+        progressBar.setVisibility(View.VISIBLE);
+        reload.setVisibility(View.GONE);
+        int i = Integer.parseInt(ids)-1;
+        String id = Integer.toString(i);
+        optionA.setVisibility(View.GONE);
+        optionB.setVisibility(View.GONE);
+        Call<WouldYouRatherModel> call = RetrofitClient.getInstance(WouldYou.this)
+                .getApiConnector()
+                .speci(id);
+        call.enqueue(new Callback<WouldYouRatherModel>() {
+            @Override
+            public void onResponse(Call<WouldYouRatherModel> call, Response<WouldYouRatherModel> response) {
+                progressBar.setVisibility(View.GONE);
+                if (response.isSuccessful()) {
+                    idd = Integer.toString(response.body().getId());
+                    ids = Integer.toString(response.body().getId());
+                    pickA = response.body().getPickA();
+                    pickB = response.body().getPickB();
+                    total = response.body().getTotal();
+                    a.setText(response.body().getOptionA());
+                    b.setText(response.body().getOptionB());
+                    getUser();
+                } else {
+                    reload.setVisibility(View.VISIBLE);
+                    Toast.makeText(getApplicationContext(), "Server error", Toast.LENGTH_SHORT).show();
+                }
+
+            }
+
+            @Override
+            public void onFailure(Call<WouldYouRatherModel> call, Throwable t) {
+                progressBar.setVisibility(View.GONE);
+                reload.setVisibility(View.VISIBLE);
+                Toast.makeText(getApplicationContext(), "Network error. Check connection", Toast.LENGTH_LONG).show();
+            }
+        });
+    }
 
     private void pickedB() {
         ch = 2;
         String key = Integer.toString(2);
+        String id = idd;
         String phone = sharedPreferencesConfig.readClientsPhone();
         progressBar.setVisibility(View.VISIBLE);
         Call<MessagesModel> call = RetrofitClient.getInstance(WouldYou.this)
@@ -219,6 +321,7 @@ public class WouldYou extends AppCompatActivity {
     private void pickedA() {
         ch = 1;
         String key = Integer.toString(1);
+        String id = idd;
         String phone = sharedPreferencesConfig.readClientsPhone();
         progressBar.setVisibility(View.VISIBLE);
         Call<MessagesModel> call = RetrofitClient.getInstance(WouldYou.this)
@@ -247,7 +350,10 @@ public class WouldYou extends AppCompatActivity {
     private void getUser() {
         String phone = sharedPreferencesConfig.readClientsPhone();
         progressBar.setVisibility(View.VISIBLE);
+        percentages.setVisibility(View.GONE);
         reload.setVisibility(View.GONE);
+        next.setVisibility(View.GONE);
+        previous.setVisibility(View.GONE);
         Call<GetUserModel> call = RetrofitClient.getInstance(WouldYou.this)
                 .getApiConnector()
                 .getuser(phone);
@@ -258,7 +364,7 @@ public class WouldYou extends AppCompatActivity {
                 if (response.isSuccessful()) {
                     optionA.setVisibility(View.VISIBLE);
                     optionB.setVisibility(View.VISIBLE);
-                    if (response.body().getWould() >= Integer.parseInt(id)){
+                    if (response.body().getWould() >= Integer.parseInt(idd)){
                         double aaa = ((double) pickA/total)*100;
                         double bbb = ((double) pickB/total)*100;
                         int ra = (int)Math.rint(aaa);
@@ -268,13 +374,19 @@ public class WouldYou extends AppCompatActivity {
                         a_percent.setText(ra+"%");
                         b_percent.setText(rb+"%");
                         percentages.setVisibility(View.VISIBLE);
+                        if (Integer.parseInt(idd)<54) {
+                            next.setVisibility(View.VISIBLE);
+                        }
+                        if (Integer.parseInt(idd)>1) {
+                            previous.setVisibility(View.VISIBLE);
+                        }
                         already();
-                    }else if ((Integer.parseInt(id)-response.body().getWould())>1){
+                    }else if ((Integer.parseInt(idd)-response.body().getWould())>1){
                         optionA.setVisibility(View.GONE);
                         optionB.setVisibility(View.GONE);
                         AlertDialog.Builder al = new AlertDialog.Builder(WouldYou.this);
                         al.setTitle("Previous")
-                                .setMessage("Please participate in scenario "+(Integer.parseInt(id)-1)+" first in order to access this scenario.\nThank you")
+                                .setMessage("Please participate in the previous scenario first in order to access this scenario.\nThank you")
                                 .setPositiveButton("Cool", new DialogInterface.OnClickListener() {
                                     @Override
                                     public void onClick(DialogInterface dialogInterface, int i) {
@@ -285,6 +397,9 @@ public class WouldYou extends AppCompatActivity {
                         alertDialog.setCancelable(false);
                         alertDialog.show();
                     }else {
+                        if (Integer.parseInt(idd)>1) {
+                            previous.setVisibility(View.VISIBLE);
+                        }
                         optionA.setVisibility(View.VISIBLE);
                         optionB.setVisibility(View.VISIBLE);
                     }
@@ -308,7 +423,7 @@ public class WouldYou extends AppCompatActivity {
     private void already() {
         AlertDialog.Builder al = new AlertDialog.Builder(this);
         al.setTitle("Done!")
-                .setMessage("Results keep changing\nYou have already participated in this.\nBe sure to come back and check the results.")
+                .setMessage("Results keep changing\nYou have participated in this.\nBe sure to come back and check the results.")
                 .setPositiveButton("Cool", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
@@ -325,9 +440,6 @@ public class WouldYou extends AppCompatActivity {
         countDownTimer.cancel();
         if (adView != null){
             adView.destroy();
-        }
-        if (interstitialAd != null){
-            interstitialAd.destroy();
         }
         countDownTimer.cancel();
         super.onDestroy();

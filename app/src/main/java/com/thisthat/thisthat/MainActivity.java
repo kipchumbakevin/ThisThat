@@ -26,7 +26,7 @@ import com.squareup.picasso.Picasso;
 import com.thisthat.thisthat.utils.Constants;
 
 public class MainActivity extends AppCompatActivity {
-    Button scenario,friend,self,check;
+    Button scenario,friend,self,check,never;
     ProgressBar progressBar;
     CountDownTimer countDownTimer;
     private AdView adView,adV;
@@ -40,6 +40,7 @@ public class MainActivity extends AppCompatActivity {
         scenario = findViewById(R.id.scenarios);
         friend = findViewById(R.id.friend);
         self = findViewById(R.id.self);
+        never = findViewById(R.id.never);
         check = findViewById(R.id.check);
         progressBar = findViewById(R.id.progress);
         share = findViewById(R.id.share);
@@ -111,6 +112,7 @@ public class MainActivity extends AppCompatActivity {
                 friend.setVisibility(View.GONE);
                 self.setVisibility(View.GONE);
                 share.setVisibility(View.GONE);
+                never.setVisibility(View.GONE);
                 rate.setVisibility(View.GONE);
                 check.setVisibility(View.GONE);
             }
@@ -119,6 +121,7 @@ public class MainActivity extends AppCompatActivity {
             public void onFinish() {
                 progressBar.setVisibility(View.GONE);
                 scenario.setVisibility(View.VISIBLE);
+                never.setVisibility(View.VISIBLE);
                 friend.setVisibility(View.VISIBLE);
                 share.setVisibility(View.VISIBLE);
                 rate.setVisibility(View.VISIBLE);
@@ -130,6 +133,13 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(MainActivity.this,CheckOptions.class);
+                startActivity(intent);
+            }
+        });
+        never.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(MainActivity.this,NeverHave.class);
                 startActivity(intent);
             }
         });

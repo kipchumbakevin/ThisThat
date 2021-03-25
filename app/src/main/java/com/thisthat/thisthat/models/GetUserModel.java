@@ -40,6 +40,9 @@ public class GetUserModel {
     @SerializedName("would")
     @Expose
     private Integer would;
+    @SerializedName("never")
+    @Expose
+    private Integer never;
     @SerializedName("created_at")
     @Expose
     private String createdAt;
@@ -138,6 +141,14 @@ public class GetUserModel {
 
     public void setWould(Integer would) {
         this.would = would;
+    }
+
+    public Integer getNever() {
+        return never;
+    }
+
+    public void setNever(Integer never) {
+        this.never = never;
     }
 
     public String getCreatedAt() {
