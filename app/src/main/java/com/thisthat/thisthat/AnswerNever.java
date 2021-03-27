@@ -287,10 +287,10 @@ public class AnswerNever extends AppCompatActivity {
             public void onResponse(Call<GetUserModel> call, Response<GetUserModel> response) {
                 progressBar.setVisibility(View.GONE);
                 if (response.isSuccessful()) {
-                    main.setVisibility(View.VISIBLE);
-                    title.setVisibility(View.VISIBLE);
                     check = response.body().getNever();
                     if (check >= Integer.parseInt(idd)){
+                        main.setVisibility(View.VISIBLE);
+                        title.setVisibility(View.VISIBLE);
                         double aaa = ((double) pickA/total)*100;
                         double bbb = ((double) pickB/total)*100;
                         int ra = (int)Math.rint(aaa);
@@ -310,6 +310,9 @@ public class AnswerNever extends AppCompatActivity {
                     }else if ((Integer.parseInt(idd)-check>1)){
                         optionA.setEnabled(false);
                         optionB.setEnabled(false);
+                        if (Integer.parseInt(idd)>1) {
+                            previous.setVisibility(View.VISIBLE);
+                        }
                         AlertDialog.Builder al = new AlertDialog.Builder(AnswerNever.this);
                         al.setTitle("Previous")
                                 .setMessage("Please participate in the previous scenario first in order to access this scenario.\nThank you")
@@ -325,6 +328,11 @@ public class AnswerNever extends AppCompatActivity {
 
                     }
                     else {
+                        if (Integer.parseInt(idd)>1) {
+                            previous.setVisibility(View.VISIBLE);
+                        }
+                        main.setVisibility(View.VISIBLE);
+                        title.setVisibility(View.VISIBLE);
                         optionA.setEnabled(true);
                         optionB.setEnabled(true);
                     }

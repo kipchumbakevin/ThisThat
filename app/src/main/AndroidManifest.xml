@@ -10,7 +10,8 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.ThisThat"
         android:usesCleartextTraffic="true">
-        <activity android:name=".AnswerNever"></activity>
+        <activity android:name=".AnswerNever"
+            android:screenOrientation="portrait"/>
         <activity
             android:name=".NeverHave"
             android:screenOrientation="portrait" />

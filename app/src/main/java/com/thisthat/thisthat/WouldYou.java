@@ -384,6 +384,9 @@ public class WouldYou extends AppCompatActivity {
                     }else if ((Integer.parseInt(idd)-response.body().getWould())>1){
                         optionA.setVisibility(View.GONE);
                         optionB.setVisibility(View.GONE);
+                        if (Integer.parseInt(idd)>1) {
+                            previous.setVisibility(View.VISIBLE);
+                        }
                         AlertDialog.Builder al = new AlertDialog.Builder(WouldYou.this);
                         al.setTitle("Previous")
                                 .setMessage("Please participate in the previous scenario first in order to access this scenario.\nThank you")
