@@ -65,8 +65,8 @@ public class AnswerNever extends AppCompatActivity {
         adV = new AdView(this,getString(R.string.banner),AdSize.BANNER_HEIGHT_50);
 
         // Find the Ad Container
-        LinearLayout adContainer = (LinearLayout) findViewById(R.id.banner_container);
-        LinearLayout adC = (LinearLayout) findViewById(R.id.banner);
+        LinearLayout adContainer = findViewById(R.id.banner_container);
+        LinearLayout adC = findViewById(R.id.banner);
 
         // Add the ad view to your activity layout
         adContainer.addView(adView);

@@ -403,6 +403,8 @@ public class WouldYou extends AppCompatActivity {
                         if (Integer.parseInt(idd)>1) {
                             previous.setVisibility(View.VISIBLE);
                         }
+                        optionA.setEnabled(true);
+                        optionB.setEnabled(true);
                         optionA.setVisibility(View.VISIBLE);
                         optionB.setVisibility(View.VISIBLE);
                     }
